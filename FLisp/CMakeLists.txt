@@ -3,7 +3,7 @@
 #
 
 # 将源代码添加到此项目的可执行文件。
-add_executable (FLisp "FLisp.cpp" "FLisp.h"  "running.cpp" "running.h" "type.h" "error.cpp" "error.h" "num.h" "num.cpp" "list_split.cpp" "list_split.h")
+add_executable (FLisp "FLisp.cpp"   "running.cpp" "running.h" "type.h" "error.cpp" "error.h"     "type.cpp")
 
 if (CMAKE_VERSION VERSION_GREATER 3.12)
   set_property(TARGET FLisp PROPERTY CXX_STANDARD 20)
