@@ -19,11 +19,9 @@ void Flisp_Value::get_value(int& pr)
 
 void Flisp_Value::get_value(std::string& pr)
 {
-	std::cout << "function started" << std::endl;
 	if (type == FLISP_STRING) { // check if the type is correct
 		std::string* pointer = (std::string*)value_pointer;
 		pr = *pointer;
-		std::cout << "setted";
 	}
 	else { // if not, noise an error
 		Flisp_noise("typeError");
