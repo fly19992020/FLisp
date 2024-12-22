@@ -5,10 +5,11 @@
 int main()
 {
 	Flisp_Value x;
-	x.set_value(1000);
-	int v;
-	x.get_value(&v);
-	std::cout << v;
+	std::string s = "poi";
+	x.set_value(s);
+	std::string vs;
+	x.get_value(vs);
+	std::cout << vs;
 	return 0;
 }
 

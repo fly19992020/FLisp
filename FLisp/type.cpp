@@ -6,14 +6,27 @@
 #include "type.h"
 #include "error.h"
 
-void Flisp_Value::get_value(void* pr)
+void Flisp_Value::get_value(int& pr)
 {
-	switch (type) {
-	case FLISP_NUM: // if the type is num
+	if (type == FLISP_NUM) { // check if the type is correct
 		int* pointer = (int*)value_pointer;
-		int value = *pointer;
-		*(int*)pr = value;
-		break;
+		pr = *pointer;
+	}
+	else { // if not, noise an error
+		Flisp_noise("typeError");
+	}
+}
+
+void Flisp_Value::get_value(std::string& pr)
+{
+	std::cout << "function started" << std::endl;
+	if (type == FLISP_STRING) { // check if the type is correct
+		std::string* pointer = (std::string*)value_pointer;
+		pr = *pointer;
+		std::cout << "setted";
+	}
+	else { // if not, noise an error
+		Flisp_noise("typeError");
 	}
 }
 
@@ -46,7 +59,30 @@ void Flisp_Value::set_value(int i)
 
 void Flisp_Value::set_value(std::string s)
 {
-	//return nullptr;
+	type = FLISP_STRING;
+	if (used == true) { // if the value is used
+		free(value_pointer); // free the old address
+		std::string* p = (std::string*)malloc(sizeof(s)); // get a new address
+		if (p != nullptr) {
+			*p = s;
+		}
+		else { // if the p is a nullptr, noise an error
+			Flisp_noise("nullptr. ");
+		}
+		value_pointer = p;
+	}
+	else if (used == false) {
+		used = true;
+		std::string* p = new std::string;
+		if (p != nullptr) {
+			p->erase();
+			p->append(s);
+		}
+		else { // if the p is a nullptr, noise an error
+			Flisp_noise("nullptr. ");
+		}
+		value_pointer = p;
+	}
 }
 
 void Flisp_Value::set_value(std::list<Flisp_Value> l)
@@ -57,4 +93,11 @@ void Flisp_Value::set_value(std::list<Flisp_Value> l)
 void Flisp_Value::set_value_as_a_name(std::string s)
 {
 	//return nullptr;
+}
+
+Flisp_Value::Flisp_Value() // the init function
+{
+	used = false;
+	type = FLISP_NUL;
+	value_pointer = nullptr;
 }
