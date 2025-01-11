@@ -16,6 +16,7 @@ private:
 public:
 	void get_value(int& pr); // get a int
 	void get_value(std::string& pr); // get a string
+	void get_value(std::list<Flisp_Value>& pr); // get a list
 	void set_value(int i);
 	void set_value(std::string s);
 	void set_value(std::list<Flisp_Value> l);

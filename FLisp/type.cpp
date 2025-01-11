@@ -28,6 +28,19 @@ void Flisp_Value::get_value(std::string& pr)
 	}
 }
 
+void Flisp_Value::get_value(std::list<Flisp_Value>& pr)
+{
+	if (type == FLISP_LIST) { // check if the type is correct
+		std::list<Flisp_Value>* pointer = (std::list<Flisp_Value>*)value_pointer;
+		for (auto i = pointer->begin(); i != pointer->end(); i++) {
+			pr.push_back(*i);
+		}
+	}
+	else { // if not, noise an error
+		Flisp_noise("typeError");
+	}
+}
+
 void Flisp_Value::set_value(int i)
 {
 	type = FLISP_NUM;
@@ -60,9 +73,10 @@ void Flisp_Value::set_value(std::string s)
 	type = FLISP_STRING;
 	if (used == true) { // if the value is used
 		free(value_pointer); // free the old address
-		std::string* p = (std::string*)malloc(sizeof(s)); // get a new address
+		std::string* p = new std::string; // get a new address
 		if (p != nullptr) {
-			*p = s;
+			p->erase();
+			p->append(s);
 		}
 		else { // if the p is a nullptr, noise an error
 			Flisp_noise("nullptr. ");
@@ -85,15 +99,41 @@ void Flisp_Value::set_value(std::string s)
 
 void Flisp_Value::set_value(std::list<Flisp_Value> l)
 {
-	//return nullptr;
+	type = FLISP_LIST;
+	if (used == true) { // if the value is used
+		free(value_pointer); // free the old address
+		std::list<Flisp_Value>* p = new std::list<Flisp_Value>; // get a new address
+		if (p != nullptr) {
+			for (auto i = l.begin(); i != l.end(); i++) {
+				p->push_back(*i);
+			}
+		}
+		else { // if the p is a nullptr, noise an error
+			Flisp_noise("nullptr. ");
+		}
+		value_pointer = p;
+	}
+	else if (used == false) {
+		used = true;
+		std::list<Flisp_Value>* p = new std::list<Flisp_Value>;
+		if (p != nullptr) {
+			for (auto i = l.begin(); i != l.end(); i++) {
+				p->push_back(*i);
+			}
+		}
+		else { // if the p is a nullptr, noise an error
+			Flisp_noise("nullptr. ");
+		}
+		value_pointer = p;
+	}
 }
 
 void Flisp_Value::set_value_as_a_name(std::string s)
 {
-	//return nullptr;
+	// null
 }
 
-Flisp_Value::Flisp_Value() // the init function
+Flisp_Value::Flisp_Value()
 {
 	used = false;
 	type = FLISP_NUL;
