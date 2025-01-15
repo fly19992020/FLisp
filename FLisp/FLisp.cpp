@@ -1,15 +1,13 @@
 ﻿#include <iostream>
 #include "type.h"
+#include "list_spliting.h"
 
 
 int main()
 {
 	Flisp_Value x;
 	std::string n = "testing";
-	x.set_value_as_a_name(n);
-	std::string v;
-	x.get_value(v);
-	std::cout << v;
+	Flisp_Value l = Flisp_List_Spliting(n);
 	return 0;
 }
 
