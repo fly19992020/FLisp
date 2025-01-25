@@ -31,6 +31,7 @@ void Flisp_Value::get_value(std::string& pr)
 void Flisp_Value::get_value(std::list<Flisp_Value>& pr)
 {
     if (type == FLISP_LIST) { // check if the type is correct
+		pr.clear();
         std::list<Flisp_Value>* pointer = (std::list<Flisp_Value>*)value_pointer;
         for (auto i = pointer->begin(); i != pointer->end(); i++) {
             pr.push_back(*i);

@@ -28,7 +28,7 @@ Flisp_Value Flisp_List_Spliting(std::string s)
 				j++;
 			}
 			Flisp_Value subs;
-			subs.set_value(s.substr(i, j - i));
+			subs.set_value_as_a_name(s.substr(i, j - i));
 			l.push_back(subs);
 			i = j - 1;
 		}
