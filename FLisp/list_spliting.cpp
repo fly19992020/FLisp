@@ -42,4 +42,4 @@ Flisp_Value Flisp_List_Spliting(std::string s)
     }
     v.set_value(l); // Set the list as the value of the result
     return v; // Return the result
-}
+} // The codes andcomments are offered by GitHub Copilot. 

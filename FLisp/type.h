@@ -6,7 +6,11 @@
 #define FLISP_LIST 2
 #define FLISP_NUM 3
 #define FLISP_STRING 4
+#define FLISP_FUNC 5
+#define FLISP_C_FUNC 0
+#define FLISP_LISP_FUNC 1
 
+typedef char Func_Type;
 
 class Flisp_Value {
 private:
@@ -20,6 +24,27 @@ public:
 	void set_value(int i);
 	void set_value(std::string s);
 	void set_value(std::list<Flisp_Value> l);
+	void set_value(Flisp_Value(*function_pointer)(std::list<Flisp_Value> args_list));
+	void set_value(Flisp_Func f);
+	void set_value_as_a_func(Flisp_Value f);
 	void set_value_as_a_name(std::string s);
 	Flisp_Value();
+};
+
+/* the class for functions in Flisp:
+ * two types of functions:
+ * 1. C++ functions
+ * 2. Lisp functions:
+ * for example: [[+ a, b][print "Hello"]]
+ */ 
+class Flisp_Func {
+private:
+	Func_Type type;
+	Flisp_Value(*function_pointer)(std::list<Flisp_Value> args_list);
+	Flisp_Value value_function;
+public:
+	Flisp_Value run(std::list<Flisp_Value> args_list);
+	void set_func(Flisp_Value(*function_pointer)(std::list<Flisp_Value> args_list));
+	void set_func(Flisp_Value v);
+	Flisp_Func();
 };

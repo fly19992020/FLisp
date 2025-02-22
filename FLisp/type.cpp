@@ -1,10 +1,11 @@
 /* type.cpp
    The definition of some functions in the Flisp_Value.
    A part of Flisp. 
-   (c) fly19992020 2024
+   (c) fly19992020 2024-2025
 */
 #include "type.h"
 #include "error.h"
+#include "running.cpp"
 
 void Flisp_Value::get_value(int& pr)
 {
@@ -163,4 +164,41 @@ Flisp_Value::Flisp_Value()
     used = false;
     type = FLISP_NUL;
     value_pointer = nullptr;
+}
+
+Flisp_Value Flisp_Func::run(std::list<Flisp_Value> args_list)
+{
+	if (type == FLISP_C_FUNC) {
+		return function_pointer(args_list);
+	}
+	else if (type == FLISP_LISP_FUNC) {
+		std::list<Flisp_Value> l;
+		value_function.get_value(l);
+		Flisp_Value v;
+		for (auto i = l.begin(); i != l.end(); i++) {
+			v = Flisp_eval(*i);
+		}
+		return v;
+	}
+	else {
+		Flisp_noise("typeError");
+	}
+}
+
+void Flisp_Func::set_func(Flisp_Value(*function_pointer)(std::list<Flisp_Value>args_list))
+{
+	type = FLISP_C_FUNC;
+	this->function_pointer = function_pointer;
+}
+
+void Flisp_Func::set_func(Flisp_Value v)
+{
+	type = FLISP_LISP_FUNC;
+	this->value_function = v;
+}
+
+Flisp_Func::Flisp_Func()
+{
+	type = FLISP_C_FUNC;
+	function_pointer = nullptr;
 }
