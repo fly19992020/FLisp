@@ -43,6 +43,11 @@ void Flisp_Value::get_value(std::list<Flisp_Value>& pr)
     }
 }
 
+int Flisp_Value::get_type()
+{
+    return this->type;
+}
+
 void Flisp_Value::set_value(int i)
 {
     type = FLISP_NUM;
@@ -175,7 +180,20 @@ Flisp_Value Flisp_Func::run(std::list<Flisp_Value> args_list)
 		std::list<Flisp_Value> l;
 		value_function.get_value(l);
 		Flisp_Value v;
+        std::list<Flisp_Value> vl; // A list to get the list. 
+		std::string v1; // A string to get the first string.
+		Flisp_Value v2; // A value to get the second value.
 		for (auto i = l.begin(); i != l.end(); i++) {
+            if (i->get_type() == FLISP_LIST) {
+                i->get_value(vl);
+				auto j = vl.begin();
+				j->get_value(v1);
+                j++;
+				v2 = *j;
+                if (v1 == "return") {
+                    return Flisp_eval(v2)
+                }
+            }
 			v = Flisp_eval(*i);
 		}
 		return v;
