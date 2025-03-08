@@ -191,7 +191,7 @@ Flisp_Value Flisp_Func::run(std::list<Flisp_Value> args_list)
                 j++;
 				v2 = *j;
                 if (v1 == "return") {
-                    return Flisp_eval(v2)
+                    return Flisp_eval(v2);
                 }
             }
 			v = Flisp_eval(*i);
