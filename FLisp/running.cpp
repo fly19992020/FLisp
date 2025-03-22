@@ -6,7 +6,7 @@
 #include <map>
 
 std::map<std::string, Flisp_Value> FLisp_functions = {};
-
+/*
 Flisp_Value Flisp_eval(Flisp_Value v)
 {
 	std::list<Flisp_Value> l;
@@ -16,6 +16,11 @@ Flisp_Value Flisp_eval(Flisp_Value v)
 	if (FLisp_functions.find(s) != FLisp_functions.end()) {
 
 	}
+	Flisp_Value r;
+	return r;
+}*/
+Flisp_Value Flisp_eval(Flisp_Value v) {
+	return Flisp_Value();
 }
 
 // Run a lisp code in a std::string, and it will return the last value. 

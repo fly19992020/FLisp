@@ -5,7 +5,7 @@
 */
 #include "type.h"
 #include "error.h"
-#include "running.cpp"
+#include "running.h"
 
 void Flisp_Value::get_value(int& pr)
 {
@@ -161,6 +161,18 @@ void Flisp_Value::set_value_as_a_name(std::string s)
 			Flisp_noise("nullptr. ");
 		}
 		value_pointer = p;
+	}
+}
+
+Flisp_Value::operator int()
+{
+	if (type == FLISP_NUM) {
+		int r = *(int*)value_pointer;
+		return r;
+	}
+	else {
+		Flisp_noise("typeError");
+		return 0;
 	}
 }
 

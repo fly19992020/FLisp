@@ -12,6 +12,7 @@
 
 typedef char Func_Type;
 
+class Flisp_Func;
 class Flisp_Value {
 private:
 	void* value_pointer;
@@ -29,6 +30,7 @@ public:
 	void set_value(Flisp_Func f);
 	void set_value_as_a_func(Flisp_Value f);
 	void set_value_as_a_name(std::string s);
+	operator int();
 	Flisp_Value();
 };
 
