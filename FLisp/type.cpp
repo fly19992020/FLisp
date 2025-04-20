@@ -135,6 +135,65 @@ void Flisp_Value::set_value(std::list<Flisp_Value> l)
     }
 }
 
+void Flisp_Value::set_value(Flisp_Value(*function_pointer)(std::list<Flisp_Value>args_list))
+{
+	type = FLISP_C_FUNC;
+	if (used == true) { // if the value is used
+		free(value_pointer); // free the old address
+		Flisp_Value(*p)(std::list<Flisp_Value>args_list) = function_pointer; // get a new address
+		if (p != nullptr) {
+			value_pointer = p;
+		}
+		else { // if the p is a nullptr, noise an error
+			Flisp_noise("nullptr. ");
+		}
+	}
+	else if (used == false) {
+		used = true;
+		value_pointer = function_pointer;
+	}
+}
+
+void Flisp_Value::set_value(Flisp_Func f)
+{
+	type = FLISP_FUNC;
+	if (used == true) { // if the value is used
+		free(value_pointer); // free the old address
+		Flisp_Func* p = new Flisp_Func; // get a new address
+		if (p != nullptr) {
+			*p = f;
+		}
+		else { // if the p is a nullptr, noise an error
+			Flisp_noise("nullptr. ");
+		}
+		value_pointer = p;
+	}
+	else if (used == false) {
+		used = true;
+		value_pointer = &f;
+	}
+}
+
+void Flisp_Value::set_value_as_a_func(Flisp_Value f)
+{
+	type = FLISP_FUNC;
+	if (used == true) { // if the value is used
+		free(value_pointer); // free the old address
+		Flisp_Func* p = new Flisp_Func; // get a new address
+		if (p != nullptr) {
+			p->set_func(f);
+		}
+		else { // if the p is a nullptr, noise an error
+			Flisp_noise("nullptr. ");
+		}
+		value_pointer = p;
+	}
+	else if (used == false) {
+		used = true;
+		value_pointer = &f;
+	}
+}
+
 void Flisp_Value::set_value_as_a_name(std::string s)
 {
 	type = FLISP_NAME;
