@@ -31,6 +31,7 @@ public:
 	void set_value_as_a_func(Flisp_Value f);
 	void set_value_as_a_name(std::string s);
 	operator int();
+	operator std::string();
 	Flisp_Value();
 };
 

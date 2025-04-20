@@ -5,8 +5,8 @@
 #include <list>
 #include <map>
 
-std::map<std::string, Flisp_Value> FLisp_functions = {};
-/*
+std::map<std::string, Flisp_Func> FLisp_functions = {};
+
 Flisp_Value Flisp_eval(Flisp_Value v)
 {
 	std::list<Flisp_Value> l;
@@ -14,14 +14,14 @@ Flisp_Value Flisp_eval(Flisp_Value v)
 	std::string s;
 	l.begin()->get_value(s);
 	if (FLisp_functions.find(s) != FLisp_functions.end()) {
-
+		FLisp_functions.find(s)->second.run(l);
 	}
 	Flisp_Value r;
 	return r;
-}*/
-Flisp_Value Flisp_eval(Flisp_Value v) {
-	return Flisp_Value();
 }
+/*Flisp_Value Flisp_eval(Flisp_Value v) {
+	return Flisp_Value();
+}*/
 
 // Run a lisp code in a std::string, and it will return the last value. 
 Flisp_Value Flisp_running(std::string s) {

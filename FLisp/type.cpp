@@ -176,6 +176,18 @@ Flisp_Value::operator int()
 	}
 }
 
+Flisp_Value::operator std::string()
+{
+	if ((type == FLISP_STRING) || (type == FLISP_NAME)) {
+		std::string r = *(std::string*)value_pointer;
+		return r;
+	}
+	else {
+		Flisp_noise("typeError");
+		return "";
+	}
+}
+
 Flisp_Value::Flisp_Value()
 {
     used = false;
