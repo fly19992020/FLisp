@@ -16,9 +16,11 @@ Flisp_Value Flisp_List_Spliting(std::string s)
             int j = i;
             int count = 1; // Counter for matching parentheses
             while (count != 0) {
-                j++;
-                if (s[j] == '(') count++; // Increment counter for nested '('
-                if (s[j] == ')') count--; // Decrement counter for ')'
+                if (j < s.length()) {
+                    j++;
+                    if (s[j] == '(') count++; // Increment counter for nested '('
+                    if (s[j] == ')') count--; // Decrement counter for ')'
+                }
             }
             // Recursively split the substring and add to the list
             l.push_back(Flisp_List_Spliting(s.substr(i + 1, j - i - 1)));

@@ -268,16 +268,18 @@ Flisp_Value Flisp_Func::run(std::list<Flisp_Value> args_list)
 		Flisp_Value v2; // A value to get the second value.
 		for (auto i = l.begin(); i != l.end(); i++) {
             if (i->get_type() == FLISP_LIST) {
-                i->get_value(vl);
-				auto j = vl.begin();
-				j->get_value(v1);
-                j++;
-				v2 = *j;
+				i->get_value(vl); // Get the list.
+				auto j = vl.begin(); // Get the first value.
+				j->get_value(v1); // Get the first string.
+				j++; // Move to the second value.
+				v2 = *j; // Get the second value.
                 if (v1 == "return") {
                     return Flisp_eval(v2);
                 }
+				else {
+					v = Flisp_eval(*i);
+				}
             }
-			v = Flisp_eval(*i);
 		}
 		return v;
 	}
