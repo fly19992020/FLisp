@@ -19,19 +19,19 @@ private:
 	int type;
 	bool used = 0;
 public:
-	void get_value(int& pr); // get a int
+	void get_value(int& pr); // get an int
 	void get_value(std::string& pr); // get a string
 	void get_value(std::list<Flisp_Value>& pr); // get a list
 	int get_type();
 	void set_value(int i);
 	void set_value(std::string s);
 	void set_value(std::list<Flisp_Value> l);
-	void set_value(Flisp_Value(*function_pointer)(std::list<Flisp_Value> args_list));
+	//void set_value(Flisp_Value(*function_pointer)(std::list<Flisp_Value> args_list));
 	void set_value(Flisp_Func f);
 	void set_value_as_a_func(Flisp_Value f);
 	void set_value_as_a_name(std::string s);
-	operator int();
-	operator std::string();
+	explicit operator int();
+	explicit operator std::string();
 	Flisp_Value();
 };
 

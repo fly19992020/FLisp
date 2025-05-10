@@ -21,7 +21,7 @@ void Flisp_Value::get_value(int& pr)
 void Flisp_Value::get_value(std::string& pr)
 {
     if ((type == FLISP_STRING) || (type == FLISP_NAME)) { // check if the type is correct
-        std::string* pointer = (std::string*)value_pointer;
+        auto* pointer = (std::string*)value_pointer;
         pr = *pointer;
     }
     else { // if not, noise an error
@@ -33,9 +33,9 @@ void Flisp_Value::get_value(std::list<Flisp_Value>& pr)
 {
     if (type == FLISP_LIST) { // check if the type is correct
 		pr.clear();
-        std::list<Flisp_Value>* pointer = (std::list<Flisp_Value>*)value_pointer;
-        for (auto i = pointer->begin(); i != pointer->end(); i++) {
-            pr.push_back(*i);
+        auto* pointer = (std::list<Flisp_Value>*)value_pointer;
+        for (auto & i : *pointer) {
+            pr.push_back(i);
         }
     }
     else { // if not, noise an error
@@ -81,25 +81,15 @@ void Flisp_Value::set_value(std::string s)
     if (used == true) { // if the value is used
         free(value_pointer); // free the old address
         std::string* p = new std::string; // get a new address
-        if (p != nullptr) {
-            p->erase();
-            p->append(s);
-        }
-        else { // if the p is a nullptr, noise an error
-            Flisp_noise("nullptr. ");
-        }
+    	p->erase();
+    	p->append(s);
         value_pointer = p;
     }
     else if (used == false) {
         used = true;
         std::string* p = new std::string;
-        if (p != nullptr) {
-            p->erase();
-            p->append(s);
-        }
-        else { // if the p is a nullptr, noise an error
-            Flisp_noise("nullptr. ");
-        }
+        p->erase();
+    	p->append(s);
         value_pointer = p;
     }
 }
@@ -135,7 +125,7 @@ void Flisp_Value::set_value(std::list<Flisp_Value> l)
     }
 }
 
-void Flisp_Value::set_value(Flisp_Value(*function_pointer)(std::list<Flisp_Value>args_list))
+/*void Flisp_Value::set_value(Flisp_Value(*function_pointer)(std::list<Flisp_Value>args_list))
 {
 	type = FLISP_C_FUNC;
 	if (used == true) { // if the value is used
@@ -152,7 +142,7 @@ void Flisp_Value::set_value(Flisp_Value(*function_pointer)(std::list<Flisp_Value
 		used = true;
 		value_pointer = function_pointer;
 	}
-}
+}*/
 
 void Flisp_Value::set_value(Flisp_Func f)
 {
@@ -160,12 +150,7 @@ void Flisp_Value::set_value(Flisp_Func f)
 	if (used == true) { // if the value is used
 		free(value_pointer); // free the old address
 		Flisp_Func* p = new Flisp_Func; // get a new address
-		if (p != nullptr) {
-			*p = f;
-		}
-		else { // if the p is a nullptr, noise an error
-			Flisp_noise("nullptr. ");
-		}
+		*p = f;
 		value_pointer = p;
 	}
 	else if (used == false) {
@@ -180,12 +165,7 @@ void Flisp_Value::set_value_as_a_func(Flisp_Value f)
 	if (used == true) { // if the value is used
 		free(value_pointer); // free the old address
 		Flisp_Func* p = new Flisp_Func; // get a new address
-		if (p != nullptr) {
-			p->set_func(f);
-		}
-		else { // if the p is a nullptr, noise an error
-			Flisp_noise("nullptr. ");
-		}
+		p->set_func(f);
 		value_pointer = p;
 	}
 	else if (used == false) {
@@ -199,26 +179,16 @@ void Flisp_Value::set_value_as_a_name(std::string s)
 	type = FLISP_NAME;
 	if (used == true) { // if the value is used
 		free(value_pointer); // free the old address
-		std::string* p = new std::string; // get a new address
-		if (p != nullptr) {
-			p->erase();
-			p->append(s);
-		}
-		else { // if the p is a nullptr, noise an error
-			Flisp_noise("nullptr. ");
-		}
+		auto* p = new std::string; // get a new address
+		p->erase();
+		p->append(s);
 		value_pointer = p;
 	}
 	else if (used == false) {
 		used = true;
-		std::string* p = new std::string;
-		if (p != nullptr) {
-			p->erase();
-			p->append(s);
-		}
-		else { // if the p is a nullptr, noise an error
-			Flisp_noise("nullptr. ");
-		}
+		auto* p = new std::string;
+		p->erase();
+		p->append(s);
 		value_pointer = p;
 	}
 }
@@ -271,8 +241,7 @@ Flisp_Value Flisp_Func::run(std::list<Flisp_Value> args_list)
 				i->get_value(vl); // Get the list.
 				auto j = vl.begin(); // Get the first value.
 				j->get_value(v1); // Get the first string.
-				j++; // Move to the second value.
-				v2 = *j; // Get the second value.
+				v2 = *(++j); // move to and get the second value.
                 if (v1 == "return") {
                     return Flisp_eval(v2);
                 }

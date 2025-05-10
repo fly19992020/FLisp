@@ -7,7 +7,7 @@
 int main()
 {
 	Flisp_Value x;
-	FLisp_functions["print"].set_func([](std::list<Flisp_Value> args_list) {
+	Flisp_functions["print"].set_func([](std::list<Flisp_Value> args_list) {
 		for (auto i = args_list.begin(); i != args_list.end(); i++) {
 			std::string s;
 			i->get_value(s);

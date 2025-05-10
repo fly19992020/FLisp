@@ -6,7 +6,7 @@
 #include <map>
 #include "error.h"
 
-std::map<std::string, Flisp_Func> FLisp_functions = {};
+std::map<std::string, Flisp_Func> Flisp_functions = {};
 
 Flisp_Value Flisp_eval(Flisp_Value v)
 {
@@ -14,8 +14,8 @@ Flisp_Value Flisp_eval(Flisp_Value v)
 	v.get_value(l);
 	std::string s;
 	l.begin()->get_value(s);
-	if (FLisp_functions.find(s) != FLisp_functions.end()) {
-		FLisp_functions.find(s)->second.run(l);
+	if (Flisp_functions.find(s) != Flisp_functions.end()) {
+		Flisp_functions.find(s)->second.run(l);
 	}
 	else {
 		Flisp_noise("function not found");
