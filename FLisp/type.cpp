@@ -64,7 +64,7 @@ void Flisp_Value::set_value(int i)
     }
     else if (used == false) {
         used = true;
-        int* p = (int*)malloc(sizeof(i));
+        auto p = static_cast<int*>(malloc(sizeof(i)));
         if (p != nullptr) {
             *p = i;
         }
@@ -80,14 +80,14 @@ void Flisp_Value::set_value(std::string s)
     type = FLISP_STRING;
     if (used == true) { // if the value is used
         free(value_pointer); // free the old address
-        std::string* p = new std::string; // get a new address
+        auto* p = new std::string; // get a new address
     	p->erase();
     	p->append(s);
         value_pointer = p;
     }
     else if (used == false) {
         used = true;
-        std::string* p = new std::string;
+        auto* p = new std::string;
         p->erase();
     	p->append(s);
         value_pointer = p;
@@ -99,20 +99,15 @@ void Flisp_Value::set_value(std::list<Flisp_Value> l)
     type = FLISP_LIST;
     if (used == true) { // if the value is used
         free(value_pointer); // free the old address
-        std::list<Flisp_Value>* p = new std::list<Flisp_Value>; // get a new address
-        if (p != nullptr) {
-            for (auto i = l.begin(); i != l.end(); i++) {
-                p->push_back(*i);
-            }
-        }
-        else { // if the p is a nullptr, noise an error
-            Flisp_noise("nullptr. ");
-        }
+        auto* p = new std::list<Flisp_Value>; // get a new address
+    	for (auto & i : l) {
+    		p->push_back(i);
+    	}
         value_pointer = p;
     }
     else if (used == false) {
         used = true;
-        std::list<Flisp_Value>* p = new std::list<Flisp_Value>;
+        auto* p = new std::list<Flisp_Value>;
         if (p != nullptr) {
             for (auto i = l.begin(); i != l.end(); i++) {
                 p->push_back(*i);
