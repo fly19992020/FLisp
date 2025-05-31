@@ -224,7 +224,7 @@ Flisp_Value::Flisp_Value()
     value_pointer = nullptr;
 }
 
-Flisp_Value Flisp_Func::run(std::list<Flisp_Value> args_list)
+Flisp_Value Flisp_Func::run(std::list<Flisp_Value>& args_list)
 {
 	if (type == FLISP_C_FUNC) {
 		return function_pointer(args_list);
