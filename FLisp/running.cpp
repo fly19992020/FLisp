@@ -14,6 +14,7 @@ Flisp_Value Flisp_eval(Flisp_Value v)
 	v.get_value(l);
 	std::string s;
 	l.begin()->get_value(s);
+	l.pop_front();
 	if (Flisp_functions.find(s) != Flisp_functions.end()) {
 		Flisp_functions.find(s)->second.run(l);
 	}

@@ -47,7 +47,7 @@ private:
 	Flisp_Value(*function_pointer)(std::list<Flisp_Value> args_list);
 	Flisp_Value value_function;
 public:
-	Flisp_Value run(std::list<Flisp_Value> args_list);
+	Flisp_Value run(std::list<Flisp_Value> &args_list);
 	void set_func(Flisp_Value(*function_pointer)(std::list<Flisp_Value> args_list));
 	void set_func(Flisp_Value v);
 	Flisp_Func();
