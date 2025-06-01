@@ -26,6 +26,17 @@ Flisp_Value Flisp_List_Spliting(std::string s)
             l.push_back(Flisp_List_Spliting(s.substr(i + 1, j - i - 1)));
             i = j; // Move the index to the end of the processed substring
         }
+        else if (s[i] == '"') {
+            for (int j = i + 1; j < s.length(); j++) {
+                if (s[j] == '\"') { // Find the closing quote
+                    Flisp_Value subs;
+                    subs.set_value(s.substr(i + 1, j - i - 1)); // Set the substring as a string value
+                    l.push_back(subs); // Add to the list
+                    i = j; // Move the index to the end of the processed string
+                    break; // Exit the loop after finding the closing quote
+                }
+            }
+        }
         else if (s[i] == ' ') {
             continue; // Skip spaces
         }
