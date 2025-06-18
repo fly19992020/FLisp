@@ -21,7 +21,7 @@ void Flisp_Value::get_value(int& pr)
 void Flisp_Value::get_value(std::string& pr)
 {
     if ((type == FLISP_STRING) || (type == FLISP_NAME)) { // check if the type is correct
-        auto* pointer = (std::string*)value_pointer;
+        auto* pointer = static_cast<std::string*>(this->value_pointer);
         pr = *pointer;
     }
     else { // if not, noise an error
@@ -240,9 +240,7 @@ Flisp_Value Flisp_Func::run(std::list<Flisp_Value>& args_list)
                 if (v1 == "return") {
                     return Flisp_eval(v2);
                 }
-				else {
-					v = Flisp_eval(*i);
-				}
+				v = Flisp_eval(*i);
             }
 		}
 		return v;

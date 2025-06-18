@@ -7,7 +7,7 @@
  * "(a b c)" -> [[a, b, c]]
  * "(a b (c d))" -> [[a, b, [c, d]]]
  */
-Flisp_Value Flisp_List_Spliting(std::string s)
+Flisp_Value Flisp_List_Spliting(const std::string& s)
 {
     std::list<Flisp_Value> l; // List to store the split values
     Flisp_Value v; // Variable to store the final result
