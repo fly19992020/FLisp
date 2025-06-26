@@ -53,24 +53,14 @@ void Flisp_Value::set_value(int i)
     type = FLISP_NUM;
     if (used == true) { // if the value is used
         free(value_pointer); // free the old address
-        auto p = static_cast<int *>(malloc(sizeof(i))); // get a new address
-        if (p != nullptr) {
-            *p = i;
-        }
-        else { // if the p is a nullptr, noise an error
-            Flisp_noise("nullptr. ");
-        }
+        auto p = new int; // get a new address
+    	*p = i;
         value_pointer = p;
     }
     else if (used == false) {
         used = true;
-        auto p = static_cast<int*>(malloc(sizeof(i)));
-        if (p != nullptr) {
-            *p = i;
-        }
-        else { // if the p is a nullptr, noise an error
-            Flisp_noise("nullptr. ");
-        }
+        auto p = new int;
+    	*p = i;
         value_pointer = p;
     }
 }
