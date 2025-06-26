@@ -43,7 +43,7 @@ void Flisp_Value::get_value(std::list<Flisp_Value>& pr)
     }
 }
 
-int Flisp_Value::get_type()
+int Flisp_Value::get_type() const
 {
     return this->type;
 }
@@ -94,7 +94,7 @@ void Flisp_Value::set_value(const std::string& s)
     }
 }
 
-void Flisp_Value::set_value(std::list<Flisp_Value> l)
+void Flisp_Value::set_value(const std::list<Flisp_Value>& l)
 {
     type = FLISP_LIST;
     if (used == true) { // if the value is used
@@ -154,7 +154,7 @@ void Flisp_Value::set_value_as_a_func(Flisp_Value f)
 	type = FLISP_FUNC;
 	if (used == true) { // if the value is used
 		free(value_pointer); // free the old address
-		Flisp_Func* p = new Flisp_Func; // get a new address
+		auto* p = new Flisp_Func; // get a new address
 		p->set_func(f);
 		value_pointer = p;
 	}
@@ -186,7 +186,7 @@ void Flisp_Value::set_value_as_a_name(const std::string& s)
 Flisp_Value::operator int()
 {
 	if (type == FLISP_NUM) {
-		int r = *(int*)value_pointer;
+		int r = *static_cast<int *>(value_pointer);
 		return r;
 	}
 	else {
@@ -198,7 +198,7 @@ Flisp_Value::operator int()
 Flisp_Value::operator std::string()
 {
 	if ((type == FLISP_STRING) || (type == FLISP_NAME)) {
-		std::string r = *(std::string*)value_pointer;
+		std::string r = *static_cast<std::string *>(value_pointer);
 		return r;
 	}
 	else {
@@ -214,7 +214,7 @@ Flisp_Value::Flisp_Value()
     value_pointer = nullptr;
 }
 
-Flisp_Value Flisp_Func::run(std::list<Flisp_Value>& args_list)
+Flisp_Value Flisp_Func::run(const std::list<Flisp_Value>& args_list)
 {
 	if (type == FLISP_C_FUNC) {
 		return function_pointer(args_list);
@@ -225,24 +225,22 @@ Flisp_Value Flisp_Func::run(std::list<Flisp_Value>& args_list)
 		Flisp_Value v;
         std::list<Flisp_Value> vl; // A list to get the list. 
 		std::string v1; // A string to get the first string.
-		Flisp_Value v2; // A value to get the second value.
-		for (auto i = l.begin(); i != l.end(); i++) {
-            if (i->get_type() == FLISP_LIST) {
-				i->get_value(vl); // Get the list.
+		// A value to get the second value.
+		for (auto & i : l) {
+            if (i.get_type() == FLISP_LIST) {
+				i.get_value(vl); // Get the list.
 				auto j = vl.begin(); // Get the first value.
 				j->get_value(v1); // Get the first string.
-				v2 = *(++j); // move to and get the second value.
+				Flisp_Value v2 = *(++j); // move to and get the second value.
                 if (v1 == "return") {
                     return Flisp_eval(v2); // If the first string is "return", return the second value.
                 }
-				v = Flisp_eval(*i);
+				v = Flisp_eval(i);
             }
 		}
 		return v;
 	}
-	else {
-		Flisp_noise("typeError");
-	}
+	return {};
 }
 
 void Flisp_Func::set_func(Flisp_Value(*function_pointer)(std::list<Flisp_Value>args_list))
