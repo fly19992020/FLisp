@@ -8,15 +8,15 @@
 
 std::map<std::string, Flisp_Func> Flisp_functions = {};
 
-Flisp_Value Flisp_eval(Flisp_Value v)
+[[deprecated]]Flisp_Value Flisp_eval(Flisp_Value v)
 {
 	std::list<Flisp_Value> l;
 	v.get_value(l);
 	std::string s;
 	l.begin()->get_value(s);
 	l.pop_front();
-	if (Flisp_functions.find(s) != Flisp_functions.end()) {
-		Flisp_functions.find(s)->second.run(l);
+	if (Flisp_functions.contains(s)) {
+		Flisp_functions.find(s)->second.run(l, Flisp_VM()); // Run the function with the list of arguments
 	}
 	else {
 		Flisp_noise("function not found");
@@ -29,7 +29,7 @@ Flisp_Value Flisp_eval(Flisp_Value v)
 }*/
 
 // Run a lisp code in a std::string, and it will return the last value. 
-Flisp_Value Flisp_running(const std::string& s) {
+[[deprecated]]Flisp_Value Flisp_running(const std::string& s) {
 	Flisp_Value list = Flisp_List_Spliting(s);
 	std::list<Flisp_Value> commands = {};
 	list.get_value(commands);

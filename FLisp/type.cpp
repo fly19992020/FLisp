@@ -204,10 +204,10 @@ Flisp_Value::Flisp_Value()
     value_pointer = nullptr;
 }
 
-Flisp_Value Flisp_Func::run(const std::list<Flisp_Value>& args_list)
+Flisp_Value Flisp_Func::run(const std::list<Flisp_Value>& args_list, Flisp_VM vm)
 {
 	if (type == FLISP_C_FUNC) {
-		return function_pointer(args_list);
+		return function_pointer(args_list, vm);
 	}
 	else if (type == FLISP_LISP_FUNC) {
 		std::list<Flisp_Value> l;
@@ -223,9 +223,9 @@ Flisp_Value Flisp_Func::run(const std::list<Flisp_Value>& args_list)
 				j->get_value(v1); // Get the first string.
 				Flisp_Value v2 = *(++j); // move to and get the second value.
                 if (v1 == "return") {
-                    return Flisp_eval(v2); // If the first string is "return", return the second value.
+                    return vm.eval(v2); // If the first string is "return", return the second value.
                 }
-				v = Flisp_eval(i);
+				v = vm.eval(i);
             }
 		}
 		return v;
@@ -233,7 +233,7 @@ Flisp_Value Flisp_Func::run(const std::list<Flisp_Value>& args_list)
 	return {};
 }
 
-void Flisp_Func::set_func(Flisp_Value(*function_pointer)(std::list<Flisp_Value>args_list))
+void Flisp_Func::set_func(Flisp_Value(*function_pointer)(std::list<Flisp_Value>args_list, Flisp_VM vm))
 {
 	type = FLISP_C_FUNC;
 	this->function_pointer = function_pointer;
