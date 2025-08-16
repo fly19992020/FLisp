@@ -15,6 +15,10 @@ Flisp_Value Flisp_VM::eval(Flisp_Value v) {
     std::string s;
     l.begin()->get_value(s);
     l.pop_front();
+    if (static_cast<std::string>(*l.begin()) == "define") {
+        this->add_variable(s, l.back()); // If the first element is "define", add a variable
+        return {}; // Return an empty value after defining a variable
+    }
     if (this->functions.contains(s)) {
         return this->functions.find(s)->second.run(l, *this); // Run the function with the list of arguments
     } else {
@@ -37,4 +41,8 @@ Flisp_Value Flisp_VM::running(const std::string &s) {
 
 void Flisp_VM::add_function(const std::string &name, const Flisp_Func& func) {
     this->functions[name] = func; // Add the function to the map
+}
+
+void Flisp_VM::add_variable(const std::string &name, const Flisp_Value& value) {
+    this->variables[name] = value; // Add the variable to the map
 }

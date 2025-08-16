@@ -17,8 +17,10 @@ public:
     Flisp_Value eval(Flisp_Value v);
     Flisp_Value running(const std::string& s);
     void add_function(const std::string& name, const Flisp_Func& func);
+    void add_variable(const std::string& name, const Flisp_Value& value);
 protected:
     std::map<std::string, Flisp_Func> functions;
+    std::map<std::string, Flisp_Value> variables; // Map to store variables
 };
 
 #endif //VM_H
