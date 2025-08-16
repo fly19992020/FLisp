@@ -25,6 +25,7 @@ public:
 	void get_value(int& pr); // get an int
 	void get_value(std::string& pr); // get a string
 	void get_value(std::list<Flisp_Value>& pr); // get a list
+	void get_value(Flisp_Func& pr); // get a function
 	int get_type() const;
 	void set_value(int i);
 	void set_value(const std::string& s);

@@ -43,6 +43,17 @@ void Flisp_Value::get_value(std::list<Flisp_Value>& pr)
     }
 }
 
+void Flisp_Value::get_value(Flisp_Func& pr)
+{
+	if (type == FLISP_FUNC) { // check if the type is correct
+		auto* pointer = static_cast<Flisp_Func*>(this->value_pointer);
+		pr = *pointer;
+	}
+	else { // if not, noise an error
+		Flisp_noise("typeError");
+	}
+}
+
 int Flisp_Value::get_type() const
 {
     return this->type;
