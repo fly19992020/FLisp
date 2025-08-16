@@ -19,8 +19,10 @@ Flisp_Value Flisp_VM::eval(Flisp_Value v) {
     l.begin()->get_value(s);
     l.pop_front();
     if (s == "define") {
-        this->add_variable(s, eval(l.back())); // If the first element is "define", add a variable
+        this->add_variable(s, eval(l.front())); // If the first element is "define", add a variable
         return {}; // Return an empty value after defining a variable
+    } else if (s == "quote") {
+        return l.front(); // If the first element is "quote", return the first value in the list
     }
     if (this->functions.contains(s)) {
         return this->functions.find(s)->second.run(l, *this); // Run the function with the list of arguments
