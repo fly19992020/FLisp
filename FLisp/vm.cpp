@@ -12,11 +12,14 @@
 Flisp_Value Flisp_VM::eval(Flisp_Value v) {
     std::list<Flisp_Value> l; // Extract the list from the value
     v.get_value(l); // Assuming v is a list type
+    if (l.empty()) {
+        return {};
+    }
     std::string s;
     l.begin()->get_value(s);
     l.pop_front();
-    if (static_cast<std::string>(*l.begin()) == "define") {
-        this->add_variable(s, l.back()); // If the first element is "define", add a variable
+    if (s == "define") {
+        this->add_variable(s, eval(l.back())); // If the first element is "define", add a variable
         return {}; // Return an empty value after defining a variable
     }
     if (this->functions.contains(s)) {

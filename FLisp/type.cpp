@@ -219,6 +219,9 @@ Flisp_Value Flisp_Func::run(const std::list<Flisp_Value>& args_list, Flisp_VM vm
 		for (auto & i : l) {
             if (i.get_type() == FLISP_LIST) {
 				i.get_value(vl); // Get the list.
+				if (vl.empty()) {
+					continue;
+				}
 				auto j = vl.begin(); // Get the first value.
 				j->get_value(v1); // Get the first string.
 				Flisp_Value v2 = *(++j); // move to and get the second value.
