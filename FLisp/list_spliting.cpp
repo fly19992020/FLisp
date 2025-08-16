@@ -40,6 +40,12 @@ Flisp_Value Flisp_List_Spliting(const std::string& s)
         else if (s[i] == ' ') {
             continue; // Skip spaces
         }
+        else if (s[i] == ';') {
+            // Skip comments
+            while (s[i] != '\n' && i < s.length()) {
+                i++; // Move to the end of the comment line
+            }
+        }
         else {
             int j = i;
             // Find the end of the current token
