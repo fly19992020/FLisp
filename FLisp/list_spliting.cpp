@@ -1,6 +1,7 @@
 #include "type.h"
 #include <iostream>
 #include <list>
+#include <string>
 
 // Split a string into a list of Flisp_Value. 
 /* For example:
@@ -45,6 +46,17 @@ Flisp_Value Flisp_List_Spliting(const std::string& s)
             while (s[i] != '\n' && i < s.length()) {
                 i++; // Move to the end of the comment line
             }
+        }
+        else if (isdigit(s[i])) {
+            std::string num_str;
+            while (isdigit(s[i]) && i < s.length()) {
+                i++; // Move to the end of the number
+                num_str += s[i - 1]; // Append the digit to the number string
+            }
+            Flisp_Value subs;
+            subs.set_value(std::stoi(num_str)); // Convert the number string to an integer and set it as a value
+            l.push_back(subs); // Add the integer value to the list
+            i--; // Adjust the index to point to the last processed character
         }
         else {
             int j = i;
