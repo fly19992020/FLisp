@@ -49,5 +49,5 @@ void Flisp_VM::add_function(const std::string &name, const Flisp_Func& func) {
 }
 
 void Flisp_VM::add_variable(const std::string &name, const Flisp_Value& value) {
-    this->variables[name] = value; // Add the variable to the map
+    this->global_variables[name] = value; // Add the variable to the map
 }

@@ -20,7 +20,7 @@ public:
     void add_variable(const std::string& name, const Flisp_Value& value);
 protected:
     std::map<std::string, Flisp_Func> functions;
-    std::map<std::string, Flisp_Value> variables; // Map to store variables
+    std::map<std::string, Flisp_Value> global_variables; // Map to store variables
 };
 
 #endif //VM_H
