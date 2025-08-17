@@ -58,6 +58,31 @@ Flisp_Value Flisp_List_Spliting(const std::string& s)
             l.push_back(subs); // Add the integer value to the list
             i--; // Adjust the index to point to the last processed character
         }
+        else if (s[i] == '\'') {
+            i++;
+            while (i < s.length() && isspace(s[i])) i++;
+            Flisp_Value quote_list, quote_name;
+            quote_name.set_value_as_a_name("quote");
+            std::list<Flisp_Value> quote_args;
+            quote_args.push_back(quote_name);
+            if (s[i] == '(') {
+                int depth = 1, j = i + 1;
+                while (j < s.length() && depth) {
+                    if (s[j] == '(') depth++;
+                    if (s[j] == ')') depth--;
+                    j++;
+                }
+                quote_args.push_back(Flisp_List_Spliting(s.substr(i + 1, j - i - 2)));
+                i = j;
+            } else {
+                int j = i;
+                while (s[j] != ' ' && s[j] != ')' && j < s.length()) {
+                    j++;
+                }
+                quote_args.push_back(Flisp_List_Spliting(s.substr(i, j - i)));
+                i = j;
+            }
+        }
         else {
             int j = i;
             // Find the end of the current token
