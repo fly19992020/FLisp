@@ -10,31 +10,33 @@
 #include "list_spliting.h"
 
 Flisp_Value Flisp_VM::eval(Flisp_Value v) {
-    std::list<Flisp_Value> l; // Extract the list from the value
-    v.get_value(l); // Assuming v is a list type
-    if (l.empty()) {
-        return {};
-    }
-    std::string s;
-    l.begin()->get_value(s);
-    l.pop_front();
-    if (s == "define") {
-        this->add_variable(s, eval(l.front())); // If the first element is "define", add a variable
-        return {}; // Return an empty value after defining a variable
-    } else if (s == "quote") {
-        return l.front(); // If the first element is "quote", return the first value in the list
-    }
-    if (this->functions.contains(s)) {
-        return this->functions.find(s)->second.run(l, *this); // Run the function with the list of arguments
-    } else if(this->global_variables.contains(s)) {
-        if (this->global_variables[s].get_type() == FLISP_FUNC) {
-            Flisp_Func f;
-            this->global_variables[s].get_value(f);
-            return f.run(l, *this); // Run the function stored in the variable
+    if (v.get_type() == FLISP_LIST) {
+        std::list<Flisp_Value> l; // Extract the list from the value
+        v.get_value(l); // Assuming v is a list type
+        if (l.empty()) {
+            return {};
         }
-    } else {
-        Flisp_noise("function not found");
-        return {}; // Return an empty value on error
+        std::string s;
+        l.begin()->get_value(s);
+        l.pop_front();
+        if (s == "define") {
+            this->add_variable(s, eval(l.front())); // If the first element is "define", add a variable
+            return {}; // Return an empty value after defining a variable
+        } else if (s == "quote") {
+            return l.front(); // If the first element is "quote", return the first value in the list
+        }
+        if (this->functions.contains(s)) {
+            return this->functions.find(s)->second.run(l, *this); // Run the function with the list of arguments
+        } else if(this->global_variables.contains(s)) {
+            if (this->global_variables[s].get_type() == FLISP_FUNC) {
+                Flisp_Func f;
+                this->global_variables[s].get_value(f);
+                return f.run(l, *this); // Run the function stored in the variable
+            }
+        } else {
+            Flisp_noise("function not found");
+            return {}; // Return an empty value on error
+        }
     }
 }
 
