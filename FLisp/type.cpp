@@ -264,3 +264,8 @@ Flisp_Func::Flisp_Func()
 	type = FLISP_C_FUNC;
 	function_pointer = nullptr;
 }
+
+std::string Flisp_Name::get_name()
+{
+	return this->name;
+}

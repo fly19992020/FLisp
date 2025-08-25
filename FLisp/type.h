@@ -2,6 +2,7 @@
 class Flisp_VM;
 #include <iostream>
 #include <list>
+#include <variant>
 #include "vm.h"
 #define FLISP_NUL 0
 #define FLISP_NAME 1
@@ -14,8 +15,9 @@ class Flisp_VM;
 
 typedef char Func_Type;
 
-
+class Flisp_Value;
 class Flisp_Func;
+class Flisp_Name;
 class Flisp_Value {
 private:
 	void* value_pointer;
@@ -55,4 +57,11 @@ public:
 	void set_func(Flisp_Value(*function_pointer)(std::list<Flisp_Value> args_list, Flisp_VM vm));
 	void set_func(Flisp_Value v);
 	Flisp_Func();
+};
+
+class Flisp_Name : public std::string {
+public:
+	std::string get_name();
+private:
+    std::string name;
 };

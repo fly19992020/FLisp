@@ -78,7 +78,8 @@ Flisp_Value Flisp_List_Spliting(const std::string& s)
                 int j = i;
                 while (s[j] != ' ' && s[j] != ')' && j < s.length()) {
                     j++;
-                }
+                } // Find the end of the current token
+                 // Recursively split the substring and add to the list
                 quote_args.push_back(Flisp_List_Spliting(s.substr(i, j - i)));
                 i = j;
             }
@@ -98,4 +99,4 @@ Flisp_Value Flisp_List_Spliting(const std::string& s)
     }
     v.set_value(l); // Set the list as the value of the result
     return v; // Return the result
-} // The codes andcomments are offered by GitHub Copilot. 
+} // The codes and comments are offered by GitHub Copilot. 
