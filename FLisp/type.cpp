@@ -269,3 +269,6 @@ std::string Flisp_Name::get_name()
 {
 	return this->name;
 }
+void Flisp_Name::set_name(const std::string& s) {
+	this->name = s;
+}

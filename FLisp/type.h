@@ -23,6 +23,7 @@ private:
 	void* value_pointer;
 	int type;
 	bool used = false;
+	std::variant<std::monostate, Flisp_Name, std::list<Flisp_Value>, int, std::string, Flisp_Func> value;
 public:
 	void get_value(int& pr); // get an int
 	void get_value(std::string& pr); // get a string
@@ -62,6 +63,7 @@ public:
 class Flisp_Name : public std::string {
 public:
 	std::string get_name();
+	void set_name(const std::string& s);
 private:
     std::string name;
 };
