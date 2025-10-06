@@ -66,3 +66,13 @@ std::string Flisp_Name::get_name()
 void Flisp_Name::set_name(const std::string& s) {
 	this->name = s;
 }
+
+void Flisp_Value::get_value(int &pr)
+{
+	try {
+		pr = std::get<int>(this->value);
+	}
+	catch (const std::bad_variant_access&) {
+		Flisp_noise("Type error: not an integer.");
+	}
+}
